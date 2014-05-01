@@ -1,0 +1,10 @@
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\bin\Debug\RoboCopyScriptGenerator.exe
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\bin\Debug\RoboCopyScriptGenerator.pdb
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\bin\Debug\RoboCopyScriptGenerator.xml
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\obj\x86\Debug\RoboCopyScriptGenerator.Form1.resources
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\obj\x86\Debug\RoboCopyScriptGenerator.Resources.resources
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\obj\x86\Debug\RoboCopyScriptGenerator.vbproj.GenerateResource.Cache
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\obj\x86\Debug\RoboCopyScriptGenerator.exe
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\obj\x86\Debug\RoboCopyScriptGenerator.xml
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\obj\x86\Debug\RoboCopyScriptGenerator.pdb
+C:\Work\Code\RoboCopyScriptGenerator\RoboCopyScriptGenerator\bin\Debug\RoboCopyScriptGenerator.exe.config
