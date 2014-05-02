@@ -55,6 +55,8 @@ Partial Class Form1
         Me.DeleteSelectedDestinationFilesToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.RunScriptToolStripButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.OpenTerminalToolStripButton = New System.Windows.Forms.ToolStripButton()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -284,7 +286,7 @@ Partial Class Form1
         '
         'ScriptToolStrip
         '
-        Me.ScriptToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WrapToolStripButton, Me.ToolStripSeparator1, Me.RunScriptToolStripButton})
+        Me.ScriptToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WrapToolStripButton, Me.ToolStripSeparator1, Me.RunScriptToolStripButton, Me.ToolStripSeparator2, Me.OpenTerminalToolStripButton})
         Me.ScriptToolStrip.Location = New System.Drawing.Point(0, 0)
         Me.ScriptToolStrip.Name = "ScriptToolStrip"
         Me.ScriptToolStrip.Size = New System.Drawing.Size(997, 27)
@@ -365,8 +367,21 @@ Partial Class Form1
         Me.RunScriptToolStripButton.Image = CType(resources.GetObject("RunScriptToolStripButton.Image"), System.Drawing.Image)
         Me.RunScriptToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.RunScriptToolStripButton.Name = "RunScriptToolStripButton"
-        Me.RunScriptToolStripButton.Size = New System.Drawing.Size(63, 24)
-        Me.RunScriptToolStripButton.Text = "Run..."
+        Me.RunScriptToolStripButton.Size = New System.Drawing.Size(178, 24)
+        Me.RunScriptToolStripButton.Text = "Run script in terminal..."
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 27)
+        '
+        'OpenTerminalToolStripButton
+        '
+        Me.OpenTerminalToolStripButton.Image = CType(resources.GetObject("OpenTerminalToolStripButton.Image"), System.Drawing.Image)
+        Me.OpenTerminalToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.OpenTerminalToolStripButton.Name = "OpenTerminalToolStripButton"
+        Me.OpenTerminalToolStripButton.Size = New System.Drawing.Size(179, 24)
+        Me.OpenTerminalToolStripButton.Text = "Open empty terminal..."
         '
         'Form1
         '
@@ -438,5 +453,7 @@ Partial Class Form1
     Friend WithEvents DestinationListViewMenuContextStrip As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents RunScriptToolStripButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents OpenTerminalToolStripButton As System.Windows.Forms.ToolStripButton
 
 End Class

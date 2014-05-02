@@ -265,6 +265,13 @@ Public Class Form1
     End Sub
 
     Private Sub RunScriptToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RunScriptToolStripButton.Click
-        RunCommand("robocopy /l")
+        If MsgBox("Run script: " & Me.ScriptTextBox.Text, MsgBoxStyle.OkCancel, "Confirm") = MsgBoxResult.Ok Then
+            Process.Start("cmd", "/k " & Me.ScriptTextBox.Text)
+        End If
+    End Sub
+
+    Private Sub OpenTerminalToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenTerminalToolStripButton.Click
+        My.Computer.Clipboard.SetText(Me.ScriptTextBox.Text)
+        Process.Start("cmd.exe")
     End Sub
 End Class
