@@ -19,6 +19,33 @@ RoboCopyScriptGenerator
 	<summary>
   A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
+</member><member name="M:RoboCopyScriptGenerator.Form1.BuildScript">
+	<summary>
+ Assembles the RoboCopy script in the Me.ScriptTextBox TextBox
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RoboCopyScriptGenerator.Form1.ReconcileListViewItems(System.Boolean)">
+	<summary>
+ Loops through each source file and shows which destination files will be overwritten and 
+ </summary>
+	<param name="Reset"></param>
+	<remarks></remarks>
+</member><member name="M:RoboCopyScriptGenerator.Form1.RunScriptInTerminal(System.Boolean)">
+	<summary>
+ Opens a terminal (command prompt) and submits the RoboCopy script contained in Me.ScriptTextBox.Text
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RoboCopyScriptGenerator.Form1.OpenTerminal">
+	<summary>
+ Opens an empty terminal (command prompt). Also copies the script contained in Me.ScriptTextBox.Text to the clipboard so it can be immediately copied into the terminal if desired.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:RoboCopyScriptGenerator.Form1.OpenTreenodeDirectory(System.Windows.Forms.TreeNode)">
+	<summary>
+ Opens the directory contained in the directory node's tag property.
+ </summary>
+	<param name="Node">TreeNode</param>
+	<remarks></remarks>
 </member>
 </members>
 </doc>
