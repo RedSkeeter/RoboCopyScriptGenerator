@@ -33,6 +33,7 @@ Partial Class Form1
         Me.SourceFileName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SourceFileStatus = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SourceFileLastUpdated = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.SourceFileRelativeAge = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.SourceDirectoryToolStripTextBox = New System.Windows.Forms.ToolStripTextBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
@@ -44,9 +45,14 @@ Partial Class Form1
         Me.DestinationFileLastUpdated = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.DestinationFileRelativeAge = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
-        Me.MapDriveToolStripButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
         Me.DestinationDirectoryToolStripTextBox = New System.Windows.Forms.ToolStripTextBox()
+        Me.MapDriveToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.DeleteSelectedDestinationFilesToolStripButton = New System.Windows.Forms.ToolStripButton()
+        Me.RefreshDestinationListViewToolStripButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
+        Me.CompareToSourceToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ScriptPanel = New System.Windows.Forms.Panel()
         Me.ScriptTextBox = New System.Windows.Forms.TextBox()
         Me.ScriptToolStrip = New System.Windows.Forms.ToolStrip()
@@ -61,8 +67,6 @@ Partial Class Form1
         Me.WrapToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.MainSplitContainer = New System.Windows.Forms.SplitContainer()
         Me.DestinationListViewMenuContextStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.RefreshDestinationListViewToolStripButton = New System.Windows.Forms.ToolStripButton()
-        Me.SourceFileRelativeAge = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -185,6 +189,11 @@ Partial Class Form1
         Me.SourceFileLastUpdated.Text = "Last updated"
         Me.SourceFileLastUpdated.Width = 150
         '
+        'SourceFileRelativeAge
+        '
+        Me.SourceFileRelativeAge.Text = "Relative age"
+        Me.SourceFileRelativeAge.Width = 100
+        '
         'ToolStrip1
         '
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SourceDirectoryToolStripTextBox})
@@ -271,25 +280,31 @@ Partial Class Form1
         '
         'ToolStrip2
         '
-        Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MapDriveToolStripButton, Me.DestinationDirectoryToolStripTextBox, Me.DeleteSelectedDestinationFilesToolStripButton, Me.RefreshDestinationListViewToolStripButton})
+        Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel2, Me.DestinationDirectoryToolStripTextBox, Me.MapDriveToolStripButton, Me.DeleteSelectedDestinationFilesToolStripButton, Me.RefreshDestinationListViewToolStripButton, Me.ToolStripSeparator5, Me.ToolStripSeparator6, Me.CompareToSourceToolStripButton})
         Me.ToolStrip2.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip2.Name = "ToolStrip2"
         Me.ToolStrip2.Size = New System.Drawing.Size(481, 29)
         Me.ToolStrip2.TabIndex = 2
         Me.ToolStrip2.Text = "ToolStrip2"
         '
-        'MapDriveToolStripButton
+        'ToolStripLabel2
         '
-        Me.MapDriveToolStripButton.Image = CType(resources.GetObject("MapDriveToolStripButton.Image"), System.Drawing.Image)
-        Me.MapDriveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.MapDriveToolStripButton.Name = "MapDriveToolStripButton"
-        Me.MapDriveToolStripButton.Size = New System.Drawing.Size(105, 26)
-        Me.MapDriveToolStripButton.Text = "Map drive..."
+        Me.ToolStripLabel2.Name = "ToolStripLabel2"
+        Me.ToolStripLabel2.Size = New System.Drawing.Size(88, 26)
+        Me.ToolStripLabel2.Text = "Destination:"
         '
         'DestinationDirectoryToolStripTextBox
         '
         Me.DestinationDirectoryToolStripTextBox.Name = "DestinationDirectoryToolStripTextBox"
         Me.DestinationDirectoryToolStripTextBox.Size = New System.Drawing.Size(400, 27)
+        '
+        'MapDriveToolStripButton
+        '
+        Me.MapDriveToolStripButton.Image = CType(resources.GetObject("MapDriveToolStripButton.Image"), System.Drawing.Image)
+        Me.MapDriveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.MapDriveToolStripButton.Name = "MapDriveToolStripButton"
+        Me.MapDriveToolStripButton.Size = New System.Drawing.Size(105, 24)
+        Me.MapDriveToolStripButton.Text = "Map drive..."
         '
         'DeleteSelectedDestinationFilesToolStripButton
         '
@@ -299,6 +314,36 @@ Partial Class Form1
         Me.DeleteSelectedDestinationFilesToolStripButton.Name = "DeleteSelectedDestinationFilesToolStripButton"
         Me.DeleteSelectedDestinationFilesToolStripButton.Size = New System.Drawing.Size(23, 20)
         Me.DeleteSelectedDestinationFilesToolStripButton.Text = "Delete"
+        Me.DeleteSelectedDestinationFilesToolStripButton.ToolTipText = "Delete selected file"
+        '
+        'RefreshDestinationListViewToolStripButton
+        '
+        Me.RefreshDestinationListViewToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.RefreshDestinationListViewToolStripButton.Image = CType(resources.GetObject("RefreshDestinationListViewToolStripButton.Image"), System.Drawing.Image)
+        Me.RefreshDestinationListViewToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.RefreshDestinationListViewToolStripButton.Name = "RefreshDestinationListViewToolStripButton"
+        Me.RefreshDestinationListViewToolStripButton.Size = New System.Drawing.Size(23, 20)
+        Me.RefreshDestinationListViewToolStripButton.Text = "Refresh"
+        '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 27)
+        '
+        'ToolStripSeparator6
+        '
+        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 27)
+        '
+        'CompareToSourceToolStripButton
+        '
+        Me.CompareToSourceToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.CompareToSourceToolStripButton.Image = CType(resources.GetObject("CompareToSourceToolStripButton.Image"), System.Drawing.Image)
+        Me.CompareToSourceToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.CompareToSourceToolStripButton.Name = "CompareToSourceToolStripButton"
+        Me.CompareToSourceToolStripButton.Size = New System.Drawing.Size(23, 20)
+        Me.CompareToSourceToolStripButton.Text = "Compare to source"
+        Me.CompareToSourceToolStripButton.ToolTipText = "Compare destination files to source"
         '
         'ScriptPanel
         '
@@ -410,20 +455,6 @@ Partial Class Form1
         Me.DestinationListViewMenuContextStrip.Name = "DestinationListViewMenuContextStrip"
         Me.DestinationListViewMenuContextStrip.Size = New System.Drawing.Size(61, 4)
         '
-        'RefreshDestinationListViewToolStripButton
-        '
-        Me.RefreshDestinationListViewToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.RefreshDestinationListViewToolStripButton.Image = CType(resources.GetObject("RefreshDestinationListViewToolStripButton.Image"), System.Drawing.Image)
-        Me.RefreshDestinationListViewToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.RefreshDestinationListViewToolStripButton.Name = "RefreshDestinationListViewToolStripButton"
-        Me.RefreshDestinationListViewToolStripButton.Size = New System.Drawing.Size(23, 20)
-        Me.RefreshDestinationListViewToolStripButton.Text = "Refresh"
-        '
-        'SourceFileRelativeAge
-        '
-        Me.SourceFileRelativeAge.Text = "Relative age"
-        Me.SourceFileRelativeAge.Width = 100
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -502,5 +533,9 @@ Partial Class Form1
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents RefreshDestinationListViewToolStripButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents SourceFileRelativeAge As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ToolStripLabel2 As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents CompareToSourceToolStripButton As System.Windows.Forms.ToolStripButton
 
 End Class

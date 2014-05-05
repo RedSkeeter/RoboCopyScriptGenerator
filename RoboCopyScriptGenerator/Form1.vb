@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Windows.Forms.ListView
 
 Public Class Form1
 
@@ -10,16 +11,34 @@ Public Class Form1
         LoadDirectoryTrees()
     End Sub
 
+    Private Sub SourceTreeView_NodeMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles SourceTreeView.NodeMouseClick
+        Me.SourceDirectoryToolStripTextBox.Text = e.Node.Tag
+        SourceDirectory = e.Node.Tag
+        If My.Computer.FileSystem.DirectoryExists(e.Node.Tag) Then
+            LoadDirectories(e.Node, Me.SourceListView)
+            LoadFiles(Me.SourceListView, e.Node.Tag)
+            BuildScript()
+        End If
+    End Sub
+
+    Private Sub DestinationTreeView_NodeMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles DestinationTreeView.NodeMouseClick
+        Me.DestinationDirectoryToolStripTextBox.Text = e.Node.Tag
+        DestinationDirectory = e.Node.Tag
+        If My.Computer.FileSystem.DirectoryExists(e.Node.Tag) Then
+            LoadDirectories(e.Node, Me.DestinationListView)
+            LoadFiles(Me.DestinationListView, e.Node.Tag)
+            BuildScript()
+        End If
+    End Sub
+
     Private Sub LoadDirectoryTrees()
         Dim AllDrives() As DriveInfo = DriveInfo.GetDrives()
-        Debug.Print(My.Settings.FavoriteDirectories)
 
         Dim SourceFavoritesNode As New TreeNode("Favorite directories", 0, 0)
         Me.SourceTreeView.Nodes.Add(SourceFavoritesNode)
 
         Dim DestinationFavoritesNode As New TreeNode("Favorite directories", 0, 0)
         Me.DestinationTreeView.Nodes.Add(DestinationFavoritesNode)
-
 
         Try
             Dim FavoriteDirectories() As String = My.Settings.FavoriteDirectories.Split(",")
@@ -63,7 +82,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub LoadAssets(ByVal Treenode As TreeNode, ByVal ListView As ListView)
+    Private Sub LoadDirectories(ByVal Treenode As TreeNode, ByVal ListView As ListView)
         Dim Directory As String = Treenode.Tag
         If My.Computer.FileSystem.DirectoryExists(Directory) Then
             Try
@@ -81,18 +100,19 @@ Public Class Form1
                     ListView.Items.Add(DirectoryListViewItem)
                 Next
 
-                LoadListView(ListView, Directory)
+                LoadFiles(ListView, Directory)
 
             Catch ex As Exception
                 MsgBox(Treenode.Text & "(" & ex.Message & ")")
                 Treenode.StateImageIndex = 3
             End Try
         Else
+            Treenode.StateImageKey = "Folder_Error"
             Treenode.Text = Treenode.Text & "(missing)"
         End If
     End Sub
 
-    Private Sub LoadListView(ByVal ListView As ListView, ByVal Directory As String)
+    Private Sub LoadFiles(ByVal ListView As ListView, ByVal Directory As String)
         If My.Computer.FileSystem.DirectoryExists(Directory) Then
             'load the directory's files into the listbox
             ListView.Items.Clear()
@@ -109,28 +129,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub SourceTreeView_NodeMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles SourceTreeView.NodeMouseClick
-        Me.SourceDirectoryToolStripTextBox.Text = ""
-        Me.SourceDirectoryToolStripTextBox.Text = e.Node.Tag
-        SourceDirectory = e.Node.Tag
-        If My.Computer.FileSystem.DirectoryExists(e.Node.Tag) Then
-            LoadAssets(e.Node, Me.SourceListView)
-        End If
-        BuildScript()
-        ReconcileListViewItems(True)
-    End Sub
 
-    Private Sub DestinationTreeView_NodeMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles DestinationTreeView.NodeMouseClick
-        Me.DestinationDirectoryToolStripTextBox.Text = ""
-        Me.DestinationDirectoryToolStripTextBox.Text = e.Node.Tag
-        DestinationDirectory = e.Node.Tag
-        If My.Computer.FileSystem.DirectoryExists(e.Node.Tag) Then
-            LoadAssets(e.Node, Me.DestinationListView)
-        End If
-        BuildScript()
-        ReconcileListViewItems(True)
-        ReconcileListViewItems(False)
-    End Sub
 
 
 
@@ -186,6 +185,26 @@ Public Class Form1
             Next
         End If
     End Sub
+
+    'Private Sub DefineSourceFiles()
+    '    For Each SourceListViewItem As ListViewItem In Me.SourceListView.Items
+    '        Dim SourceFileInfo As New FileInfo(SourceDirectory & "\" & SourceListViewItem.Text.Trim)
+    '        SourceListViewItem.SubItems(1).Text = "Source"
+    '        SourceListViewItem.SubItems(2).Text = SourceFileInfo.LastWriteTime
+    '        SourceListViewItem.SubItems(2).Text = ""
+    '    Next
+    'End Sub
+
+    'Private Sub DefineDestinationFiles()
+    '    For Each DestinationListViewItem As ListViewItem In Me.DestinationListView.Items
+    '        Dim DestinationFileInfo As New FileInfo(DestinationDirectory & "\" & DestinationListViewItem.Text.Trim)
+    '        DestinationListViewItem.SubItems(1).Text = "Destination"
+    '        DestinationListViewItem.SubItems(2).Text = DestinationFileInfo.LastWriteTime
+    '        DestinationListViewItem.SubItems(2).Text = ""
+    '    Next
+    'End Sub
+
+
 
     Private Sub SourceListView_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SourceListView.SelectedIndexChanged
         'clear the existing list of files
@@ -263,7 +282,7 @@ Public Class Form1
                         'delete the file
                         My.Computer.FileSystem.DeleteFile(Filepath)
 
-                        LoadListView(DestinationListView, DestinationDirectory)
+                        LoadFiles(DestinationListView, DestinationDirectory)
                     Catch ex As Exception
                         MsgBox(ex.Message)
                     End Try
@@ -301,7 +320,7 @@ Public Class Form1
         'run the robocopy script in a terminal after confirmation
         RunScriptInTerminal(True)
 
-        LoadListView(Me.DestinationListView, Me.DestinationDirectoryToolStripTextBox.Text)
+        LoadFiles(Me.DestinationListView, Me.DestinationDirectoryToolStripTextBox.Text)
     End Sub
 
 
@@ -341,5 +360,11 @@ Public Class Form1
 
     Private Sub RefreshDestinationListViewToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshDestinationListViewToolStripButton.Click
         LoadListView(Me.DestinationListView, Me.DestinationDirectoryToolStripTextBox.Text)
+    End Sub
+
+    Private Sub CompareToSourceToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompareToSourceToolStripButton.Click
+        DefineSourceFiles()
+        DefineDestinationFiles()
+
     End Sub
 End Class
