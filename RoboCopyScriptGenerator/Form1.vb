@@ -359,12 +359,12 @@ Public Class Form1
     End Sub
 
     Private Sub RefreshDestinationListViewToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshDestinationListViewToolStripButton.Click
-        LoadListView(Me.DestinationListView, Me.DestinationDirectoryToolStripTextBox.Text)
+        LoadFiles(Me.DestinationListView, Me.DestinationDirectoryToolStripTextBox.Text)
     End Sub
 
     Private Sub CompareToSourceToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompareToSourceToolStripButton.Click
-        DefineSourceFiles()
-        DefineDestinationFiles()
+        'DefineSourceFiles()
+        'DefineDestinationFiles()
 
     End Sub
 End Class
