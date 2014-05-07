@@ -18,6 +18,7 @@ Public Class Form1
             LoadDirectories(e.Node, Me.SourceListView)
             LoadFiles(Me.SourceListView, e.Node.Tag)
             BuildScript()
+            CompareDirectories()
         End If
     End Sub
 
@@ -28,6 +29,7 @@ Public Class Form1
             LoadDirectories(e.Node, Me.DestinationListView)
             LoadFiles(Me.DestinationListView, e.Node.Tag)
             BuildScript()
+            CompareDirectories()
         End If
     End Sub
 
@@ -116,20 +118,77 @@ Public Class Form1
         If My.Computer.FileSystem.DirectoryExists(Directory) Then
             'load the directory's files into the listbox
             ListView.Items.Clear()
-            For Each File As String In My.Computer.FileSystem.GetFiles(Directory)
-                Dim FileInfo As New FileInfo(File)
-                Dim FileListViewItem As New ListViewItem(FileInfo.Name, 4)
-                FileListViewItem.SubItems.Add("") 'status
-                FileListViewItem.SubItems.Add(FileInfo.LastWriteTime) 'last updated
-                FileListViewItem.SubItems.Add("Unreconciled") 'relative age
-                ListView.Items.Add(FileListViewItem)
-            Next
+            Try
+                For Each File As String In My.Computer.FileSystem.GetFiles(Directory)
+                    Dim FileInfo As New FileInfo(File)
+                    Dim FileListViewItem As New ListViewItem(FileInfo.Name, 4)
+                    FileListViewItem.SubItems.Add("") 'status
+                    FileListViewItem.SubItems.Add(FileInfo.LastWriteTime) 'last updated
+                    FileListViewItem.SubItems.Add("") 'relative age
+                    ListView.Items.Add(FileListViewItem)
+                Next
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
         Else
             MsgBox("Could not refresh the destination files list.  The directory " & Directory & " does not exist.")
         End If
     End Sub
 
+    Private Sub CompareDirectories()
+        Dim SourcePath As String = Me.SourceDirectoryToolStripTextBox.Text.Trim
+        Dim DestinationPath As String = Me.DestinationDirectoryToolStripTextBox.Text.Trim
+        If My.Computer.FileSystem.DirectoryExists(SourcePath) And My.Computer.FileSystem.DirectoryExists(DestinationPath) Then
+            For Each SourceFile As ListViewItem In Me.SourceListView.Items
+                Dim SFName As String = SourceFile.Text
+                Dim SFileInfo As New FileInfo(SourcePath & "\" & SFName)
+                Dim SFStatus As String
+                Dim SF
+                For Each DestinationFile As ListViewItem In Me.DestinationListView.Items
+                    Dim DFName As String = DestinationFile.Text
+                    Dim DFileInfo As New FileInfo(DestinationPath & "\" & DFName)
 
+                    If SFileInfo.Name.Trim.ToLower = DFileInfo.Name.Trim.ToLower Then
+
+                        'compare the source and destination file last write dates
+                        Dim SRelativeAge As String = ""
+                        Dim DRelativeAge As String = ""
+
+                        'get the last write times
+                        If SFileInfo.LastWriteTime = DFileInfo.LastWriteTime Then
+                            SRelativeAge = "Same"
+                            DRelativeAge = "Same"
+                        ElseIf SFileInfo.LastWriteTime > DFileInfo.LastWriteTime Then
+                            SRelativeAge = "Newer"
+                            DRelativeAge = "Older"
+                        End If
+
+                        'color the source and destination files based on relative age
+                        If DRelativeAge = "Newer" Then
+                            DestinationFile.ForeColor = Color.DarkGreen
+                            SourceFile.ForeColor = Color.DarkRed
+                        ElseIf DRelativeAge = "Older" Then
+                            DestinationFile.ForeColor = Color.DarkRed
+                            SourceFile.ForeColor = Color.DarkGreen
+                        Else
+                            DestinationFile.ForeColor = Color.Black
+                            SourceFile.ForeColor = Color.Black
+                        End If
+
+                        With DestinationFile
+                            .SubItems(1).Text = "Found"
+                            .SubItems(3).Text = DRelativeAge
+                        End With
+
+                        With SourceFile
+                            .SubItems(1).Text = "Found"
+                            .SubItems(3).Text = SRelativeAge
+                        End With
+                    End If
+                Next
+            Next
+        End If
+    End Sub
 
 
 
@@ -148,6 +207,7 @@ Public Class Form1
     ''' <param name="Reset"></param>
     ''' <remarks></remarks>
     Private Sub ReconcileListViewItems(ByVal Reset As Boolean)
+        Exit Sub
         If Not Reset = True Then
             For Each SourceListViewItem As ListViewItem In Me.SourceListView.SelectedItems
                 For Each DestinationListViewItem As ListViewItem In Me.DestinationListView.Items
@@ -185,26 +245,6 @@ Public Class Form1
             Next
         End If
     End Sub
-
-    'Private Sub DefineSourceFiles()
-    '    For Each SourceListViewItem As ListViewItem In Me.SourceListView.Items
-    '        Dim SourceFileInfo As New FileInfo(SourceDirectory & "\" & SourceListViewItem.Text.Trim)
-    '        SourceListViewItem.SubItems(1).Text = "Source"
-    '        SourceListViewItem.SubItems(2).Text = SourceFileInfo.LastWriteTime
-    '        SourceListViewItem.SubItems(2).Text = ""
-    '    Next
-    'End Sub
-
-    'Private Sub DefineDestinationFiles()
-    '    For Each DestinationListViewItem As ListViewItem In Me.DestinationListView.Items
-    '        Dim DestinationFileInfo As New FileInfo(DestinationDirectory & "\" & DestinationListViewItem.Text.Trim)
-    '        DestinationListViewItem.SubItems(1).Text = "Destination"
-    '        DestinationListViewItem.SubItems(2).Text = DestinationFileInfo.LastWriteTime
-    '        DestinationListViewItem.SubItems(2).Text = ""
-    '    Next
-    'End Sub
-
-
 
     Private Sub SourceListView_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SourceListView.SelectedIndexChanged
         'clear the existing list of files
