@@ -5,5 +5,8 @@
     <Setting Name="FavoriteDirectories" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Switches" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/z /v /l</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

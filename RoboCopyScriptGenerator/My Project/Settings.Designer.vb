@@ -65,6 +65,18 @@ Namespace My
                 Me("FavoriteDirectories") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("/z /v /l")>  _
+        Public Property Switches() As String
+            Get
+                Return CType(Me("Switches"),String)
+            End Get
+            Set
+                Me("Switches") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

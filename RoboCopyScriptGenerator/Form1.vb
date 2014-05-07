@@ -9,6 +9,8 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         LoadDirectoryTrees()
+
+        Me.SwitchesToolStripTextBox.Text = My.Settings.Switches.Trim
     End Sub
 
     Private Sub SourceTreeView_NodeMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles SourceTreeView.NodeMouseClick
@@ -18,7 +20,7 @@ Public Class Form1
             LoadDirectories(e.Node, Me.SourceListView)
             LoadFiles(Me.SourceListView, e.Node.Tag)
             BuildScript()
-            CompareDirectories()
+            'CompareDirectories()
         End If
     End Sub
 
@@ -29,7 +31,7 @@ Public Class Form1
             LoadDirectories(e.Node, Me.DestinationListView)
             LoadFiles(Me.DestinationListView, e.Node.Tag)
             BuildScript()
-            CompareDirectories()
+            'CompareDirectories()
         End If
     End Sub
 
@@ -197,7 +199,7 @@ Public Class Form1
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub BuildScript()
-        Me.ScriptTextBox.Text = "Robocopy """ & SourceDirectory & """ """ & DestinationDirectory & " " & FilesList & " " & Me.SwitchesToolStripTextBox.Text
+        Me.ScriptTextBox.Text = "Robocopy """ & SourceDirectory & """ """ & DestinationDirectory & """ " & FilesList & " " & Me.SwitchesToolStripTextBox.Text
     End Sub
 
 
@@ -403,8 +405,6 @@ Public Class Form1
     End Sub
 
     Private Sub CompareToSourceToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompareToSourceToolStripButton.Click
-        'DefineSourceFiles()
-        'DefineDestinationFiles()
-
+        CompareDirectories()
     End Sub
 End Class
