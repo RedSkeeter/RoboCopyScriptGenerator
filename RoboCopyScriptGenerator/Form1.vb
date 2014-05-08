@@ -8,6 +8,7 @@ Public Class Form1
     Dim DestinationDirectory As String = ""
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        WindowState = FormWindowState.Maximized
         LoadDirectoryTrees()
 
         Me.SwitchesToolStripTextBox.Text = My.Settings.Switches.Trim
